@@ -77,12 +77,15 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
     {
         let image = info[UIImagePickerControllerOriginalImage] as UIImage
         let imageData = UIImageJPEGRepresentation(image, 1.0) // ergibt eine NSData Instanz (s. FeedItem.swift: var image: NSData)
+        let thumbNailData = UIImageJPEGRepresentation(image, 0.1)
+        
         
         let managedObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext
         let entityDescription = NSEntityDescription.entityForName("FeedItem", inManagedObjectContext: managedObjectContext!)
         let feedItem = FeedItem(entity: entityDescription!, insertIntoManagedObjectContext: managedObjectContext!) // kein Autocomplete hier! XCode Bug??
         
         feedItem.image = imageData
+        feedItem.thumbNail = thumbNailData
         feedItem.caption = "test caption"
         
         (UIApplication.sharedApplication().delegate as AppDelegate).saveContext() // speichert Aenderungen von feedItem in CoreData (in FeedItem entity)
@@ -117,6 +120,20 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         return cell //return UICollectionViewCell() // = Placeholder um Anzeigefehler zu vermeiden
     }
+    
+    
+    
+    // UICollectionViewDelegate
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    {
+        let thisItem = feedArray[indexPath.row] as FeedItem
+        
+        var filterVC = FilterViewController()
+        filterVC.thisFeedItem = thisItem
+        
+        self.navigationController?.pushViewController(filterVC, animated: false)
+    }
+    
     
 }
 
