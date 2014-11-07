@@ -21,11 +21,15 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) // = is called each time the view is presented on the screen
+    {
         let request = NSFetchRequest(entityName: "FeedItem")
         let appDelegate: AppDelegate = (UIApplication.sharedApplication().delegate as AppDelegate)
         let context: NSManagedObjectContext = appDelegate.managedObjectContext!
         feedArray = context.executeFetchRequest(request, error: nil)! // executeFechRequest gibt ein Array vom Typ AnyObject zurueck
+        collectionView.reloadData()
     }
 
     override func didReceiveMemoryWarning()
@@ -36,6 +40,11 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     
     // @IBActions
+    @IBAction func profileTapped(sender: UIBarButtonItem)
+    {
+        self.performSegueWithIdentifier("profileSegue", sender: nil)
+    }    
+    
     @IBAction func snapBarButtonItemTapped(sender: UIBarButtonItem)
     {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)

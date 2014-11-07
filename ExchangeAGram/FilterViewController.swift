@@ -67,6 +67,25 @@ class FilterViewController: UIViewController, UICollectionViewDataSource, UIColl
         return cell
     }
     
+    //UICollectionViewDelegate
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    {
+        createUIAlertController()
+        
+//        let filterImage = self.filteredImageFromImage(self.thisFeedItem.image, filter: self.filters[indexPath.row])
+//        
+//        let imageData = UIImageJPEGRepresentation(filterImage, 1.0)
+//        self.thisFeedItem.image = imageData
+//        
+//        let thumbNailData = UIImageJPEGRepresentation(filterImage, 0.1)
+//        self.thisFeedItem.thumbNail = thumbNailData
+//        
+//        //Speichern in CoreData:
+//        (UIApplication.sharedApplication().delegate as AppDelegate).saveContext()
+//        
+//        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     
     
     // Helper Functions
@@ -117,13 +136,54 @@ class FilterViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     
+    // UIAlertController Helper Functions
+    func createUIAlertController()
+    {
+        let alert = UIAlertController(title: "Photo Options", message: "Please choose an option!", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addTextFieldWithConfigurationHandler { (textField) -> Void in
+            textField.placeholder = "Add Caption!"
+            textField.secureTextEntry = false
+        }
+        
+        var text: String
+        let textField = alert.textFields![0] as UITextField
+        
+        if textField.text != nil
+        {
+            text = textField.text
+        }
+        
+        
+        let photoAction = UIAlertAction(title: "Post to Facebook with Caption", style: UIAlertActionStyle.Destructive) { (UIAlertAction) -> Void in
+            
+        }
+        alert.addAction(photoAction)
+        
+        
+        let saveFilterAction = UIAlertAction(title: "Save Filter w/o posting", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            
+        }
+        alert.addAction(saveFilterAction)
+        
+        
+        let cancelAction = UIAlertAction(title: "Select another Filter", style: UIAlertActionStyle.Cancel) { (UIAlertAction) -> Void in
+            
+        }
+        alert.addAction(cancelAction)
+        
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    
+    
     // Caching Functions
     func cacheImage(imageNumber: Int)
     {
         //let fileName = "\(imageNumber)"
         let fileName = "\(imageNumber)-\(thisFeedItem.hashValue)"
         let uniquePath = tmp.stringByAppendingPathComponent(fileName)
-        println(uniquePath)
+        //println(uniquePath)
         
         if !NSFileManager.defaultManager().fileExistsAtPath(fileName)
         {
