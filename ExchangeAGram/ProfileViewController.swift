@@ -30,6 +30,14 @@ class ProfileViewController: UIViewController, FBLoginViewDelegate
     
     
     
+    // Aufruf des MapViewController
+    @IBAction func mapViewButtonTapped(sender: UIButton)
+    {
+        performSegueWithIdentifier("mapSegue", sender: nil)
+    }
+    
+    
+    
     // FacebookSDK Functions
     func loginViewShowingLoggedInUser(loginView: FBLoginView!)
     {
